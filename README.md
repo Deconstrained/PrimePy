@@ -4,7 +4,7 @@ PrimePy
 A Python module providing an object for finding the n-th prime number and class for prime decomposition and arithmetic with such objects.
 
 
-I wrote this for problems on Project Euler involving prime numbers and factorization because I got tired of re-writing and copying/pasting prime number utilities.
+I wrote this for problems on Project Euler involving prime numbers and factorization because I got tired of re-writing and copying/pasting prime number utilities. Also, the prime number generators from Rosetta Code I was using seemed a bit inefficient, so I decided to try making something better.
 
 ## Usage:
 <pre>

@@ -40,11 +40,6 @@ class PrimeCache(list):
                 
             ## Find the next biggest prime number ##
             p1 = self[-1]
-            # Set the upper and lower limit (on which to apply the sieve)
-            # If the upper limit is set to the square of the greatest prime,
-            # all composite numbers in the range are guaranteed to be
-            # multiples of the prime numbers known already, so there's no
-            # chance of any composite numbers escaping the sieve.
             while True:
                 p0 = p1+1
                 p1 = min(p1*2,sys.maxint-1)
