@@ -12,10 +12,12 @@ class PrimeCache(list):
     """
     def isPrime(self,n):
         """Determine if a number is prime, and get new primes in the process"""
-        i = len(self)-1
-        while n > int(sqrt(self[i])):
+        i = 0
+        while self[i] < sqrt(n):
+            if n%self[i] == 0:
+                return False
             i += 1
-        return n in self
+        return True
 
     def __init__(self,primes=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]):
         """Start out with the primes below 100"""
@@ -56,6 +58,8 @@ class PrimeCache(list):
                     self.extend(npy.flatnonzero(r)+p0)
                     if i < self.__len__():
                         return self[i] # If it hasn't been found, this process will be repeated.
+    def export(self):
+        return [p for p in self]
 
 cachedPrime = PrimeCache()
 
@@ -73,6 +77,13 @@ def decompose(n):
             n /=p
     if n > 1:
         yield n
+
+def primePi(n):
+    """Pi function; returns the number of primes less than n"""
+    i = 0
+    while n > cachedPrime[i]:
+        i+=1;
+    return i
 
 class PrimeFactors(dict):
     """Generate a prime factorization for a number."""
