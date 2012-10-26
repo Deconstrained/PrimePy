@@ -13,6 +13,8 @@ class PrimeCache(list):
     def isPrime(self,n):
         """Determine if a number is prime, and get new primes in the process"""
         i = 0
+        if n < 0:
+            return False
         while self[i] < sqrt(n):
             if n%self[i] == 0:
                 return False
