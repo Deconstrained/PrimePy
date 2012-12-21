@@ -102,6 +102,8 @@ class PrimeFactors(dict):
             return super(PrimeFactors,self).__getitem__(i)
         else:
             return 0
+    def __str__(self):
+        return ' * '.join(['*'.join([str(n)]*self[n]) for n in sorted(self.keys())])
     def __mul__(self,f):
         self.canOperate(f)
         return PrimeFactors(dict([(p,self[p]+f[p]) for p in self.keys()+f.keys()]))
