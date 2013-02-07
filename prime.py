@@ -92,7 +92,8 @@ class PrimeFactors(dict):
 	def __init__(self,n=False):
 		"""Turn an integer into a prime decomposition"""
 		if(n.__class__ in [int,npy.int64,long]):
-			factors = list(decompose(n))
+			self._n = abs(n)
+			factors = list(decompose(self._n)) if self._n!=1 else [1]
 			for f in factors:
 				self[f] += 1
 		else:
@@ -188,13 +189,12 @@ class PrimeFactors(dict):
 		"""Constructor object for getting divisors of a prime factorization object"""
 		if top:
 			p = self.keys()
-			
 		for j in range(self.__getitem__(p[i])+1):
 			if i < len(p)-1:
-				for f in self.divisors(p,i+1,False):
-					yield f*(p[i]**j)
-			else:
-				yield p[i]**j
+					for f in self.divisors(p,i+1,False):
+						yield f*(p[i]**j)
+		else:
+			yield p[i]**j
 
 
 def composeNum(p):
