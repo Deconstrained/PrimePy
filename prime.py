@@ -162,6 +162,7 @@ class PrimeFactors(dict):
 	def properDivisors(self):
 		if not hasattr(self,'_properDivisors'):
 			self._properDivisors = set(filter(lambda x: x!=self.val,self.divisors()))
+			self._properDivisors.add(1)
 		return self._properDivisors
 	@property
 	def isAbundant(self):
@@ -189,12 +190,12 @@ class PrimeFactors(dict):
 		"""Constructor object for getting divisors of a prime factorization object"""
 		if top:
 			p = self.keys()
-		for j in range(self.__getitem__(p[i])+1):
+		for j in range(self.__getitem__(p[i])+1): # All possible powers of 
 			if i < len(p)-1:
 					for f in self.divisors(p,i+1,False):
 						yield f*(p[i]**j)
-		else:
-			yield p[i]**j
+			else:
+				yield p[i]**j
 
 
 def composeNum(p):
