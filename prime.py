@@ -115,7 +115,7 @@ class PrimeFactors(dict):
 		self.canOperate(f)
 		if f.isWhole() and self.isWhole():
 			gcd = self.gcd(f)
-			return gcd.__mul__(PrimeFactors(self.__div__(gcd).val() + f.__div__(gcd).val()))
+			return gcd.__mul__(PrimeFactors(self.__div__(gcd).val + f.__div__(gcd).val))
 		elif self.isWhole():
 			# Adding a whole number to a fraction
 			num = f.numerator()
@@ -212,6 +212,6 @@ def simplifyFrac(nf):
 		if minPow > 0:
 			f[0][p] -= minPow
 			f[1][p] -= minPow
-	return [pf.val() for pf in f] 
+	return [pf.val for pf in f] 
 
 
