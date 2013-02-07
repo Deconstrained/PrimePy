@@ -66,12 +66,14 @@ class PrimeCache(list):
 cachedPrime = PrimeCache()
 
 def primes():
+	"""Iterator object for cachedPrime"""
 	i = 0
 	while i < sys.maxint - 2:
 		yield cachedPrime[i]
 		i += 1 
  
 def decompose(n):
+	"""A constructor for iterating over the list of primes that equals n when multiplied together"""
 	for p in primes():
 		if p*p > n: break
 		while n % p == 0:
@@ -158,23 +160,37 @@ class PrimeFactors(dict):
 	def canOperate(self,f):
 		if f.__class__.__name__ != "PrimeFactors":
 			raise TypeError('Incompatible types.')
+	def divisors(self,p=[],i=0,top=True):
+		"""Constructor object for getting divisors"""
+		if top:
+			p = self.keys()
+		for j in range(self.__getitem__(p[i])+1): # All possible powers of the i-th prime
+			if i < len(p)-1:
+				for f in self.divisors(p,i+1,False): # Permutations of products of possible powers of other primes beyond i
+					yield f*(p[i]**j)
+			else:
+				yield p[i]**j
 	@property
 	def properDivisors(self):
+		"""The set of all proper divisors of the number."""
 		if not hasattr(self,'_properDivisors'):
 			self._properDivisors = set(filter(lambda x: x!=self.val,self.divisors()))
 			self._properDivisors.add(1)
 		return self._properDivisors
 	@property
 	def isAbundant(self):
+		"""Whether the number is abundant"""
 		if not hasattr(self,'_isAbundant'):
 			self._isAbundant = sum(self.properDivisors) > self.val
 		return self._isAbundant
 	@property
 	def isPerfect(self):
+		"""Whether the number is perfect"""
 		if not hasattr(self,'_isPerfect'):
 			self._isPerfect = sum(self.properDivisors) == self.val
 	@property
 	def isWeird(self):
+		"""Whether the number is weird"""
 		if not hasattr(self,'_isWeird'):
 			self._isWeird = self.isAbundant
 			if self._isWeird:
@@ -186,17 +202,6 @@ class PrimeFactors(dict):
 							self._isWeird = False
 							return self._isWeird
 		return self._isWeird
-	def divisors(self,p=[],i=0,top=True):
-		"""Constructor object for getting divisors of a prime factorization object"""
-		if top:
-			p = self.keys()
-		for j in range(self.__getitem__(p[i])+1): # All possible powers of 
-			if i < len(p)-1:
-					for f in self.divisors(p,i+1,False):
-						yield f*(p[i]**j)
-			else:
-				yield p[i]**j
-
 
 def composeNum(p):
 	"""Put together a number from prime factors"""
@@ -206,6 +211,7 @@ def composeNum(p):
 	return n
 
 def simplifyFrac(nf):
+	"""Simplify a fraction using prime factorizations. Argument should be a 2-element list or tuple (numerator and denominator)"""
 	#  f[0]/f[1]
 	f = [PrimeFactors(n) for n in nf]
 	for p in f[1].keys():
@@ -214,5 +220,4 @@ def simplifyFrac(nf):
 			f[0][p] -= minPow
 			f[1][p] -= minPow
 	return [pf.val for pf in f] 
-
 
