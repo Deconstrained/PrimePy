@@ -33,20 +33,11 @@ class PrimeCache(list):
 			# Get a preexisting prime number
 			return super(PrimeCache,self).__getitem__(i)
 		else:
-			# n = self[-1]
-			# l = self.__len__()-1
-			# while True:
-			#	 while 0 in [n%p for p in self]:
-			#		 n += 2
-			#	 self.append(n)
-			#	 l +=1
-			#	 if l == i: return n
-				
 			## Find the next biggest prime number ##
 			p1 = self[-1]
 			while True:
-				p0 = p1+1
-				p1 = min(p1*2,sys.maxint-1)
+				p0 = p1+1 # Bottom of the sieve interval
+				p1 = min(p1*2,sys.maxint-1) # Top of the sieve interval
 				if p0 > p1:
 					raise IndexError("Ran out of space!!!")
 				r = npy.ones((p1-p0,),dtype=npy.bool)
@@ -219,5 +210,5 @@ def simplifyFrac(nf):
 		if minPow > 0:
 			f[0][p] -= minPow
 			f[1][p] -= minPow
-	return [pf.val for pf in f] 
+	return tuple([pf.val for pf in f])
 
