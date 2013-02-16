@@ -12,10 +12,10 @@ class PrimeCache(list):
 	"""
 	def isPrime(self,n):
 		"""Determine if a number is prime, and get new primes in the process"""
-		i = 0
-		if n < 0:
+		if n <= 1:
 			return False
-		while self[i] < sqrt(n):
+		i = 0
+		while self[i] <= sqrt(n):
 			if n%self[i] == 0:
 				return False
 			i += 1
@@ -55,6 +55,11 @@ class PrimeCache(list):
 		return [p for p in self]
 
 cachedPrime = PrimeCache()
+
+def isPrime(n):
+	global cachedPrime
+	return cachedPrime.isPrime(n)
+
 
 def primes():
 	"""Iterator object for cachedPrime"""
@@ -130,7 +135,10 @@ class PrimeFactors(dict):
 		return PrimeFactors(dict([(f,self[f]*p) for f in self]))
 	def isWhole(self):
 		"""Returns whether the number is a natural nubmer"""
-		return not False in [self[p] > 0 for p in self] 
+		return not False in [self[p] > 0 for p in self]
+	def Phi(self):
+		"""Returns the value of the Euler totient function for the number"""
+		return reduce(lambda x,y:x*(1-1./y),self.keys(),self.val)
 	@property
 	def val(self):
 		"""Evaluate the object"""
