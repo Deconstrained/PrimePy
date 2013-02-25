@@ -1,5 +1,7 @@
 ## Prime numbers module that aggressively pre-fetches and caches primes by sieving.
 # Includes prime factorization classes and methods.
+# 
+# License: http://www.gnu.org/licenses/gpl.html
 
 from math import sqrt
 import numpy as npy
@@ -20,6 +22,14 @@ class PrimeCache(list):
 				return False
 			i += 1
 		return True
+
+	def allPrimesLessThan(self,n):
+		i = 0
+		p = 2
+		while p < n:
+			yield p
+			i += 1
+			p = self[i]
 
 	def __init__(self,primes=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]):
 		"""Start out with the primes below 100"""
@@ -70,13 +80,14 @@ def primes():
  
 def decompose(n):
 	"""A constructor for iterating over the list of primes that equals n when multiplied together"""
+	ln = long(n)
 	for p in primes():
-		if p*p > n: break
-		while n % p == 0:
+		if p*p > ln: break
+		while ln % long(p) == 0:
 			yield p
-			n /=p
-	if n > 1:
-		yield n
+			ln /= long(p)
+	if ln > 1:
+		yield ln
 
 def primePi(n):
 	"""Pi function; returns the number of primes less than n"""
@@ -103,6 +114,8 @@ class PrimeFactors(dict):
 			return 0
 	def __str__(self):
 		return ' * '.join(['*'.join([str(n)]*self[n]) for n in sorted(self.keys())])
+	def __int__(self):
+		return long(self.val)
 	def __mul__(self,f):
 		self.canOperate(f)
 		return PrimeFactors(dict([(p,self[p]+f[p]) for p in self.keys()+f.keys()]))
@@ -218,5 +231,19 @@ def simplifyFrac(nf):
 		if minPow > 0:
 			f[0][p] -= minPow
 			f[1][p] -= minPow
-	return tuple([pf.val for pf in f])
+	return [pf.val for pf in f]
 
+def addFrac(f0,f1):
+	n0 = f0[0]
+	d0 = f0[1]
+	n1 = f1[0]
+	d1 = f1[1]
+	return simplifyFrac((n0*d1+n1*d0,d0*d1))
+	
+def sfPf(f):
+	for p in f[1].keys():
+		minPow = min(f[0][p],f[1][p]) if p in f[0].keys() and p in f[1].keys() else 0
+		if minPow > 0:
+			f[0][p] -= minPow
+			f[1][p] -= minPow
+	return f
